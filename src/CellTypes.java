@@ -1,39 +1,41 @@
+import Utils.GetBaseDirPath;
+
 public abstract class CellTypes {
     private static CellType empty = new CellType(
             "empty",
             1,
             1,
-            "./media/empty-cell.svg"
+            GetBaseDirPath.root() + "/src/media/empty-cell.svg"
     );
     private static CellType grass = new CellType(
             "grass",
             2,
             0.2,
-            "./media/grass-cell.svg"
+            GetBaseDirPath.root() + "/src/media/grass-cell.svg"
     );
     private static CellType sand = new CellType(
             "sand",
             4,
             0.05,
-            "./media/sand-cell.svg"
+            GetBaseDirPath.root() + "/src/media/sand-cell.svg"
     );
     private static CellType water = new CellType(
             "water",
             4,
             0.02,
-            "./media/water-cell.svg"
+            GetBaseDirPath.root() + "/src/media/water-cell.svg"
     );
     private static CellType wall = new CellType(
             "wall",
             1000,
             0.1,
-            "./media/wall-cell.svg"
+            GetBaseDirPath.root() + "/src/media/wall-cell.svg"
     ); /* Wall celltype has very high cost to prevent player from selecting it */
     private static CellType goal = new CellType(
             "goal",
             0,
             0,
-            "./media/goal-cell.svg"
+            GetBaseDirPath.root() + "/src/media/goal-cell.svg"
     ); /* SpawnChance equals zero means manual insertion */
 
     public static CellType getTypeData(String name) {
