@@ -59,6 +59,7 @@ public abstract class CellTypes {
                 selectedType = CellTypes.goal;
                 break;
             default:
+                System.out.println("(!) Unknown type please check inputs (!)");
                 selectedType = null;
                 break;
         }
