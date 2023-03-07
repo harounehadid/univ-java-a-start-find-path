@@ -16,15 +16,15 @@ public class GameManager {
         this.gameFrame = new CustomFrame("A Start Path Finding");
         this.gameFrame.addItem(this.gameField.getFieldPanel(), "center");
 
-        this.gameFrame.finalizeFrameSetup();
-
         this.launch();
+
+        this.gameFrame.finalizeFrameSetup();
     }
 
     private void launch() {
         this.player = new Player(this);
         this.gameField.spawnPlayer(this.player);
-        this.gameFrame.updateGUI();
+//        this.gameFrame.updateGUI();
 
         for (Cell curCell : this.gameField.getCellsArr()) {
             if (curCell.getType() == "goal") {
@@ -44,12 +44,14 @@ public class GameManager {
             // Check if player hit the goal
             if (this.player.hitCell(this.goalxyi)) setStatusToSuccess();
 
+            // The actual movement and player changing position is not happening
+
             this.gameField.detectPlayerMovement(this.player.getIndexPos(), nextPlayerDestination);
 
             System.out.println("Current Pos:" + this.player.getIndexPos().getX() + this.player.getIndexPos().getY());
             System.out.println("Next Pos: " + nextPlayerDestination.getX() + nextPlayerDestination.getY());
 
-            this.gameFrame.updateGUI();
+//            this.gameFrame.updateGUI();
         }
     }
 

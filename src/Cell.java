@@ -10,6 +10,7 @@ public class Cell {
     private int borderLineThickness;
     private JLabel cellGUI;
     private static int cellImageSize = 64;
+    private boolean spawnedOn = false;
     private boolean isVisited = false;
 
     public Cell(TwoDimVal dualIndex, String type) {
@@ -55,6 +56,7 @@ public class Cell {
     public void spawnedOn() {
         this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0x982da6), this.borderLineThickness));
         this.isVisited = true;
+        this.spawnedOn = true;
     }
 
     public void onCellEnter() {
@@ -63,6 +65,7 @@ public class Cell {
     }
 
     public void onCellExit() {
+        if (this.spawnedOn) return;
         this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0xf28729), this.borderLineThickness));
     }
 
