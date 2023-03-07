@@ -69,10 +69,6 @@ public class Field {
                 this.goalUnitsIndex = i;
             }
         }
-
-        this.cellUnitsArr.forEach(number->{
-            System.out.println(number);
-        });
     }
 
     private String selectCellType() {
@@ -113,6 +109,19 @@ public class Field {
 
     private void addItem(JLabel label) {
         this.fieldPanel.add(label);
+    }
+
+    public void spawnPlayer(Player player) {
+        int randomXPos = (int)Math.floor(Math.random() * this.dims.getX());
+        int randomYPos = (int)Math.floor(Math.random() * this.dims.getY());
+
+        for (Cell curCell : this.cellsArr) {
+            if (curCell.identify(randomXPos, randomYPos) && curCell.getType() != "wall") {
+                System.out.println("Here");
+                curCell.spawnedOn();
+                break;
+            }
+        }
     }
 
     // Getters

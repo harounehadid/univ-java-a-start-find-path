@@ -1,23 +1,20 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 public class Cell {
     private TwoDimVal dualIndex;
-    private String id;
     private TwoDimVal pos;
     private String type;
     private int cost;
     private double spawnChance;
     private String backgroundLoc;
-    private Border borderLine;
+    private int borderLineThickness;
     private JLabel cellGUI;
     private static int cellImageSize = 64;
 
 
     public Cell(TwoDimVal dualIndex, String type) {
         this.dualIndex = new TwoDimVal(dualIndex.getX(), dualIndex.getY());
-        this.id = "x" + this.dualIndex.getX() + "y" + this.dualIndex.getY();
 //        this.pos = new TwoDimVal(pos.getX(), pos.getY());
 
         // Call cell type to get specifications
@@ -28,19 +25,24 @@ public class Cell {
         this.spawnChance = cellData.getSpawnChance();
         this.backgroundLoc = cellData.getRepresentation();
 
-        this.borderLine = BorderFactory.createLineBorder(Color.black, 3);
-
-        this.handleGUI("image", this.backgroundLoc);
+        this.handleGUI();
     }
 
-    private void handleGUI(String itemType, String data) {
+    private void handleGUI() {
         this.cellGUI = new JLabel();
 
         this.cellGUI.setHorizontalTextPosition(JLabel.CENTER);
         this.cellGUI.setVerticalTextPosition(JLabel.CENTER);
 
-        this.cellGUI.setBorder(this.borderLine);
+        this.borderLineThickness = 7;
 
+        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0x414141), this.borderLineThickness));
+
+        this.treatLabel("image", this.backgroundLoc);
+        this.treatLabel("text", this.type);
+    }
+
+    private void treatLabel(String itemType, String data) {
         if (itemType == "image") {
             ImageIcon image = new ImageIcon(data);
             this.cellGUI.setSize(Cell.cellImageSize, Cell.cellImageSize);
@@ -51,12 +53,25 @@ public class Cell {
         }
     }
 
+    public void spawnedOn() {
+        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0x982da6), this.borderLineThickness));
+    }
+
+    public void onCellEnter() {
+        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0x3eb700), this.borderLineThickness));
+    }
+
+    public void onCellExit() {
+        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0xf28729), this.borderLineThickness));
+    }
+
+    public boolean identify(int x, int y) {
+        return this.dualIndex.getX() == x && this.dualIndex.getY() == y;
+    }
+
     // Getters
     public TwoDimVal getDualIndex() {
         return this.dualIndex;
-    }
-    public String getId() {
-        return this.id;
     }
     public TwoDimVal getPos() {
         return this.pos;

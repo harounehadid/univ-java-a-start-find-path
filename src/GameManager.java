@@ -1,5 +1,3 @@
-import javax.swing.*;
-
 public class GameManager {
     private String gameStatus = "idle";
 
@@ -11,6 +9,10 @@ public class GameManager {
 
         CustomFrame mainFrame = new CustomFrame("A Start Path Finding");
         mainFrame.addItem(field.getFieldPanel(), "center");
+
+        Player player = new Player();
+
+        field.spawnPlayer(player);
 
         mainFrame.finalizeFrameSetup();
     }
