@@ -37,6 +37,14 @@ public abstract class CellTypes {
             0,
             GetBaseDirPath.root() + "/src/media/goal-cell.png"
     ); /* SpawnChance equals zero means manual insertion */
+    private static CellType[] cellTypesArr = {
+            CellTypes.empty,
+            CellTypes.grass,
+            CellTypes.sand,
+            CellTypes.water,
+            CellTypes.wall,
+            CellTypes.goal
+    };
 
     public static CellType getTypeData(String name) {
         CellType selectedType;
@@ -67,5 +75,9 @@ public abstract class CellTypes {
         }
 
         return selectedType;
+    }
+
+    public static CellType[] getCellTypesArr() {
+        return CellTypes.cellTypesArr;
     }
 }
