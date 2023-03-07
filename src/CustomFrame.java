@@ -4,20 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CustomFrame extends JFrame {
-    public CustomFrame() {
-        this.instantiateWindow();
-
-        this.addLabel("image", CellTypes.getTypeData("grass").getRepresentation());
-        this.addLabel("text", CellTypes.getTypeData("grass").getRepresentation());
-
-        this.setVisible(true);
-    }
-
-    private void instantiateWindow() {
-        this.setTitle("A* Find The Path");
+    public CustomFrame(String frameTitle) {
+        this.setTitle(frameTitle);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.setSize(1280, 720);
+        this.setLocationRelativeTo(null);
 
         ImageIcon image = new ImageIcon(GetBaseDirPath.root() +
                 "/src/media/find-path-algorithm-logo-GeeksforGeeks-image.png");
@@ -27,16 +18,46 @@ public class CustomFrame extends JFrame {
         this.getContentPane().setBackground(new Color(0xf8f9f9));
     }
 
-    private void addLabel(String type, String data) {
-        JLabel newLabel = new JLabel();
+    public CustomFrame(String frameTitle, int width, int height) {
+        this.setTitle(frameTitle);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(true);
+        this.setLocationRelativeTo(null);
 
-        if (type == "image") {
-            newLabel.setIcon(new ImageIcon(data));
-            this.add(newLabel);
+        this.setSize(width, height);
+
+        ImageIcon image = new ImageIcon(GetBaseDirPath.root() +
+                "/src/media/find-path-algorithm-logo-GeeksforGeeks-image.png");
+
+        this.setIconImage(image.getImage());
+
+        this.getContentPane().setBackground(new Color(0xf8f9f9));
+    }
+
+    public void addItem(JPanel panel, String section) {
+        if (section == "center") {
+            this.add(panel, BorderLayout.CENTER);
         }
-        else if (type == "text") {
-            newLabel.setText(data);
-            this.add(newLabel);
+        else if (section == "north") {
+            this.add(panel, BorderLayout.NORTH);
+        }
+        else if (section == "east") {
+            this.add(panel, BorderLayout.EAST);
+        }
+        else if (section == "south") {
+            this.add(panel, BorderLayout.SOUTH);
+        }
+        else if (section == "west") {
+            this.add(panel, BorderLayout.WEST);
+        }
+        else {
+            System.out.println("(!) Unknown frame section check item added to CustomFrame (!)");
         }
     }
+
+    public void finalizeFrameSetup() {
+        // These two lines of code should be left at the very bottom
+        this.pack();
+        this.setVisible(true);
+    } /* This function is created to avoid any problems that can occure with GUI */
 }
