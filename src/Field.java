@@ -117,11 +117,45 @@ public class Field {
 
         for (Cell curCell : this.cellsArr) {
             if (curCell.identify(randomXPos, randomYPos) && curCell.getType() != "wall") {
-                System.out.println("Here");
                 curCell.spawnedOn();
                 break;
             }
         }
+
+        player.onSpawn(randomXPos, randomYPos);
+    }
+
+    public void detectPlayerMovement(TwoDimVal curPos, TwoDimVal destinedPos) {
+        for (Cell curCell : this.cellsArr) {
+            if (curCell.identify((int)curPos.getX(), (int)curPos.getY())) {
+                curCell.onCellExit();
+            }
+
+            if (curCell.identify((int)destinedPos.getX(), (int)destinedPos.getY())) {
+                curCell.onCellEnter();
+            }
+        }
+    }
+
+    public boolean inBoundary(int x, int y) {
+        return (
+            x >= 0 &&
+            x < this.dims.getX() &&
+            y >= 0 &&
+            y < this.dims.getY()
+        );
+    }
+
+    public boolean cellIsVisited(int x, int y) {
+        boolean isVisited = false;
+
+        for (Cell curCell : this.cellsArr) {
+            if (curCell.identify(x, y)) {
+                isVisited = curCell.isVisited();
+            }
+        }
+
+        return isVisited;
     }
 
     // Getters

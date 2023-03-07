@@ -60,4 +60,8 @@ public class CustomFrame extends JFrame {
         this.pack();
         this.setVisible(true);
     } /* This function is created to avoid any problems that can occure with GUI */
+
+    public void updateGUI() {
+        repaint();
+    }
 }

@@ -3,7 +3,6 @@ import java.awt.*;
 
 public class Cell {
     private TwoDimVal dualIndex;
-    private TwoDimVal pos;
     private String type;
     private int cost;
     private double spawnChance;
@@ -11,7 +10,7 @@ public class Cell {
     private int borderLineThickness;
     private JLabel cellGUI;
     private static int cellImageSize = 64;
-
+    private boolean isVisited = false;
 
     public Cell(TwoDimVal dualIndex, String type) {
         this.dualIndex = new TwoDimVal(dualIndex.getX(), dualIndex.getY());
@@ -55,10 +54,12 @@ public class Cell {
 
     public void spawnedOn() {
         this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0x982da6), this.borderLineThickness));
+        this.isVisited = true;
     }
 
     public void onCellEnter() {
         this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0x3eb700), this.borderLineThickness));
+        this.isVisited = true;
     }
 
     public void onCellExit() {
@@ -69,12 +70,13 @@ public class Cell {
         return this.dualIndex.getX() == x && this.dualIndex.getY() == y;
     }
 
+    public boolean isVisited() {
+        return this.isVisited;
+    }
+
     // Getters
     public TwoDimVal getDualIndex() {
         return this.dualIndex;
-    }
-    public TwoDimVal getPos() {
-        return this.pos;
     }
     public String getType() {
         return this.type;
