@@ -29,7 +29,7 @@ public class Player {
         this.indexPos = new TwoDimVal(x, y);
     }
 
-    public TwoDimVal move() {
+    public TwoDimVal setNextMove() {
         ArrayList<TwoDimVal> validDestinations = new ArrayList<TwoDimVal>();
 
         int possibleMoveNum = 4;
@@ -70,24 +70,29 @@ public class Player {
                 if (minCost >= 0) {
                     if (curCost <= minCost) {
                         minCost = curCost;
-                        nextXYi.setX(xyiDes.getX());
-                        nextXYi.setY(xyiDes.getY());
+                        nextXYi = xyiDes;
                     }
                 }
                 else {
                     minCost = curCost;
-                    nextXYi.setX(xyiDes.getX());
-                    nextXYi.setY(xyiDes.getY());
+                    nextXYi = xyiDes;
                 }
             }
         }
 
         if (nextXYi.getX() < 0 || nextXYi.getY() < 0) {
-            nextXYi.setX(this.indexPos.getX());
-            nextXYi.setY(this.indexPos.getY());
+            nextXYi = this.indexPos;
         }
 
         return nextXYi;
+    }
+
+    public TwoDimVal move(TwoDimVal nextDestination) {
+        TwoDimVal prevIndexPos = this.indexPos;
+
+        this.indexPos = nextDestination;
+
+        return prevIndexPos;
     }
 
     public boolean hitCell(TwoDimVal xyi) {

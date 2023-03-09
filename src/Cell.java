@@ -1,4 +1,7 @@
 import javax.swing.*;
+
+import Utils.GetBaseDirPath;
+
 import java.awt.*;
 
 public class Cell {
@@ -60,13 +63,20 @@ public class Cell {
     }
 
     public void onCellEnter() {
-        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0x3eb700), this.borderLineThickness));
+        // Green color
+        if (this.spawnedOn) return;
+        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0xf28729), this.borderLineThickness));
         this.isVisited = true;
     }
 
     public void onCellExit() {
+        // String data = GetBaseDirPath.root() + "/src/media/abandoned-cell.png";
+        // ImageIcon image = new ImageIcon(data);
+        //     this.cellGUI.setSize(Cell.cellImageSize, Cell.cellImageSize);
+        //     this.cellGUI.setIcon(image);
+        
         if (this.spawnedOn) return;
-        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0xf28729), this.borderLineThickness));
+        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0x3eb700), this.borderLineThickness));
     }
 
     public boolean identify(int x, int y) {

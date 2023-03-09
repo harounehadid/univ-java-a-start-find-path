@@ -13,18 +13,18 @@ public class GameManager {
         // Set the playing field
         this.gameField = new Field(fieldDims);
 
+        // Handle GUI
         this.gameFrame = new CustomFrame("A Start Path Finding");
         this.gameFrame.addItem(this.gameField.getFieldPanel(), "center");
-
-        this.launch();
-
         this.gameFrame.finalizeFrameSetup();
+        
+        // Launch simulation
+        this.launch();
     }
 
     private void launch() {
         this.player = new Player(this);
         this.gameField.spawnPlayer(this.player);
-//        this.gameFrame.updateGUI();
 
         for (Cell curCell : this.gameField.getCellsArr()) {
             if (curCell.getType() == "goal") {
@@ -33,25 +33,26 @@ public class GameManager {
         }
 
         while (!this.isGameOver()) {
-            TwoDimVal nextPlayerDestination = this.player.move();
+            TwoDimVal nextPlayerDestination = this.player.setNextMove();
+            TwoDimVal prevIndexPos = this.player.move(nextPlayerDestination);
 
             // Check if player stayed at the same cell
-            if (this.player.hitCell(nextPlayerDestination)) {
-                setStatusToFail();
+            if (this.player.hitCell(prevIndexPos)) setStatusToFail();
+
+            // Check if player hit the goal
+            if (this.player.hitCell(this.goalxyi)) {
+                setStatusToSuccess();
                 break;
             }
 
-            // Check if player hit the goal
-            if (this.player.hitCell(this.goalxyi)) setStatusToSuccess();
+            this.gameField.detectPlayerMovement(this.player.getIndexPos(), prevIndexPos);
 
-            // The actual movement and player changing position is not happening
-
-            this.gameField.detectPlayerMovement(this.player.getIndexPos(), nextPlayerDestination);
-
-            System.out.println("Current Pos:" + this.player.getIndexPos().getX() + this.player.getIndexPos().getY());
-            System.out.println("Next Pos: " + nextPlayerDestination.getX() + nextPlayerDestination.getY());
-
-//            this.gameFrame.updateGUI();
+            try {
+                Thread.sleep(900);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 
