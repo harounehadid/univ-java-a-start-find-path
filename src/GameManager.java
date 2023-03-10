@@ -1,21 +1,27 @@
+import javax.swing.JLabel;
+
 public class GameManager {
     private String gameStatus = "idle";
     private Field gameField;
     private CustomFrame gameFrame;
+    private JLabel gameStatusLabel;
     private Player player;
     private String failState = "player failed";
     private String successState = "player succeeded";
     private TwoDimVal goalxyi;
 
     public GameManager(TwoDimVal fieldDims) {
-        this.gameStatus = "started";
-
         // Set the playing field
         this.gameField = new Field(fieldDims);
 
         // Handle GUI
         this.gameFrame = new CustomFrame("A Start Path Finding");
         this.gameFrame.addItem(this.gameField.getFieldPanel(), "center");
+
+        this.gameStatusLabel = this.gameFrame.createLabel("text", this.gameStatus);
+        this.gameFrame.addItem(this.gameStatusLabel, "south");
+
+        // This should be called after all GUIs needed are setup
         this.gameFrame.finalizeFrameSetup();
         
         // Launch simulation
@@ -23,6 +29,9 @@ public class GameManager {
     }
 
     private void launch() {
+        this.gameStatus = "started";
+        this.gameFrame.updateLabel(this.gameStatusLabel, "text", this.gameStatus);
+
         this.player = new Player(this);
         this.gameField.spawnPlayer(this.player);
 
@@ -55,7 +64,7 @@ public class GameManager {
             }
         }
 
-        System.out.println(this.gameStatus);
+        this.gameFrame.updateLabel(this.gameStatusLabel, "text", this.gameStatus);
     }
 
     public boolean checkMoveValidity(int x, int y) {

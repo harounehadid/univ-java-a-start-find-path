@@ -55,6 +55,61 @@ public class CustomFrame extends JFrame {
         }
     }
 
+    public void addItem(JLabel label, String section) {
+        if (section == "center") {
+            this.add(label, BorderLayout.CENTER);
+        }
+        else if (section == "north") {
+            this.add(label, BorderLayout.NORTH);
+        }
+        else if (section == "east") {
+            this.add(label, BorderLayout.EAST);
+        }
+        else if (section == "south") {
+            this.add(label, BorderLayout.SOUTH);
+        }
+        else if (section == "west") {
+            this.add(label, BorderLayout.WEST);
+        }
+        else {
+            System.out.println("(!) Unknown frame section check item added to CustomFrame (!)");
+        }
+    }
+
+    public JLabel createLabel(String itemType, String data) {
+        JLabel newLabel = new JLabel();
+
+        newLabel.setHorizontalTextPosition(JLabel.CENTER);
+        newLabel.setVerticalTextPosition(JLabel.CENTER);
+
+        if (itemType == "image") {
+            ImageIcon image = new ImageIcon(data);
+            newLabel.setSize(image.getIconWidth(), image.getIconHeight());
+            newLabel.setIcon(image);
+        }
+        else if (itemType == "text") {
+            newLabel.setText(data);
+        }
+
+        return newLabel;
+    }
+
+    public void updateLabel(JLabel label, String itemType, String data) {
+        if (label == null) {
+            System.out.println("(!) Label DO NOT exist (!)");
+            return;
+        }
+
+        if (itemType == "image") {
+            ImageIcon image = new ImageIcon(data);
+            label.setSize(image.getIconWidth(), image.getIconHeight());
+            label.setIcon(image);
+        }
+        else if (itemType == "text") {
+            label.setText(data);
+        }
+    }
+
     public void finalizeFrameSetup() {
         // These two lines of code should be left at the very bottom
         this.pack();

@@ -9,7 +9,7 @@ public class Field {
     private JPanel fieldPanel;
     private int panelWidth;
     private int panelHeight;
-    private int panelGap = 5;
+    private int panelGap = 0;
     private ArrayList<Integer> cellUnitsArr;
     private int goalUnitsIndex;
 
@@ -31,7 +31,7 @@ public class Field {
 
         this.fieldPanel = new JPanel();
         this.fieldPanel.setSize(this.panelWidth, this.panelHeight);
-        this.fieldPanel.setLayout(new GridLayout(0, (int)this.dims.getX(), 5, 5));
+        this.fieldPanel.setLayout(new GridLayout(0, (int)this.dims.getX(), panelGap, panelGap));
     }
 
     private void generateCells() {

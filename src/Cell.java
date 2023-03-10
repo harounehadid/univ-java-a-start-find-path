@@ -37,7 +37,7 @@ public class Cell {
         this.cellGUI.setHorizontalTextPosition(JLabel.CENTER);
         this.cellGUI.setVerticalTextPosition(JLabel.CENTER);
 
-        this.borderLineThickness = 7;
+        this.borderLineThickness = 4;
 
         this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0x414141), this.borderLineThickness));
 
