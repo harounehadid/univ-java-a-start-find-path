@@ -63,8 +63,8 @@ public class Cell {
     }
 
     public void onCellEnter() {
-        // Green color
-        if (this.spawnedOn) return;
+        // // Green color
+        // if (this.spawnedOn) return;
         this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0xf28729), this.borderLineThickness));
         this.isVisited = true;
     }
@@ -75,7 +75,7 @@ public class Cell {
         //     this.cellGUI.setSize(Cell.cellImageSize, Cell.cellImageSize);
         //     this.cellGUI.setIcon(image);
         
-        if (this.spawnedOn) return;
+        // if (this.spawnedOn) return;
         this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0x3eb700), this.borderLineThickness));
     }
 

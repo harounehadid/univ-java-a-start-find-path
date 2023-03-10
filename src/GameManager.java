@@ -37,13 +37,13 @@ public class GameManager {
             TwoDimVal prevIndexPos = this.player.move(nextPlayerDestination);
 
             // Check if player stayed at the same cell
-            if (this.player.hitCell(prevIndexPos)) setStatusToFail();
-
-            // Check if player hit the goal
-            if (this.player.hitCell(this.goalxyi)) {
-                setStatusToSuccess();
+            if (this.player.isStuck(prevIndexPos) || (nextPlayerDestination.getX() < 0 && nextPlayerDestination.getY() < 0)) {
+                setStatusToFail();
                 break;
             }
+
+            // Check if player hit the goal
+            if (this.player.hitCell(this.goalxyi)) setStatusToSuccess();
 
             this.gameField.detectPlayerMovement(this.player.getIndexPos(), prevIndexPos);
 
@@ -54,18 +54,20 @@ public class GameManager {
                 e.printStackTrace();
             }
         }
+
+        System.out.println(this.gameStatus);
     }
 
     public boolean checkMoveValidity(int x, int y) {
         return this.gameField.inBoundary(x, y) && !this.gameField.cellIsVisited(x, y);
     }
 
-    public int checkCellCost(int x, int y) {
+    public int calculateScore(int x, int y) {
         int cost = -1;
 
         for (Cell curCell : this.gameField.getCellsArr()) {
             if (curCell.identify(x, y) && curCell.getType() != "wall") {
-                cost = curCell.getCost();
+                cost = AStarScore.calculateScore(curCell.getDualIndex(), this.goalxyi, curCell.getCost());
                 break;
             }
         }
@@ -74,7 +76,6 @@ public class GameManager {
     }
 
     private boolean isGameOver() {
-        System.out.println(this.gameStatus);
         return this.gameStatus == this.failState || this.gameStatus == this.successState;
     }
 

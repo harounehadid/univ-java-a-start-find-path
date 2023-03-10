@@ -116,7 +116,7 @@ public class Field {
         int randomYPos = (int)Math.floor(Math.random() * this.dims.getY());
 
         for (Cell curCell : this.cellsArr) {
-            if (curCell.identify(randomXPos, randomYPos) && curCell.getType() != "wall") {
+            if (curCell.identify(randomXPos, randomYPos) && curCell.getType() != "wall" && curCell.getType() != "goal") {
                 curCell.spawnedOn();
                 break;
             }

@@ -8,6 +8,7 @@ public class Player {
     private int playerSize = 32;
     private TwoDimVal indexPos;
     private GameManager gameManager;
+    private boolean isBackTracking = false;
 
     public Player(GameManager gameManager) {
         this.handleGUI();
@@ -61,20 +62,20 @@ public class Player {
         }
 
         TwoDimVal nextXYi = new TwoDimVal(-1, -1);
-        int minCost = -1;
+        int minScore = -1;
 
         for (TwoDimVal xyiDes : validDestinations) {
-            int curCost = this.gameManager.checkCellCost((int)xyiDes.getX(), (int)xyiDes.getY());
+            int curScore = this.gameManager.calculateScore((int)xyiDes.getX(), (int)xyiDes.getY());
 
-            if (curCost >= 0) {
-                if (minCost >= 0) {
-                    if (curCost <= minCost) {
-                        minCost = curCost;
+            if (curScore >= 0) {
+                if (minScore >= 0) {
+                    if (curScore <= minScore) {
+                        minScore = curScore;
                         nextXYi = xyiDes;
                     }
                 }
                 else {
-                    minCost = curCost;
+                    minScore = curScore;
                     nextXYi = xyiDes;
                 }
             }
@@ -97,6 +98,11 @@ public class Player {
 
     public boolean hitCell(TwoDimVal xyi) {
         return this.indexPos.getX() == xyi.getX() && this.indexPos.getY() == xyi.getY();
+    }
+
+    public boolean isStuck(TwoDimVal xyi) {
+        if (this.isBackTracking) return false;
+        return this.hitCell(xyi);
     }
 
     // Getters

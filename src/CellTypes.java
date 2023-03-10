@@ -1,6 +1,6 @@
 import Utils.GetBaseDirPath;
 
-public abstract class CellTypes {
+public final class CellTypes {
     private static CellType empty = new CellType(
             "empty",
             1,
@@ -21,7 +21,7 @@ public abstract class CellTypes {
     );
     private static CellType water = new CellType(
             "water",
-            4,
+            5,
             0.02,
             GetBaseDirPath.root() + "/src/media/water-cell.png"
     );
