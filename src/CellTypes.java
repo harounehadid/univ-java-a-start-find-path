@@ -22,18 +22,18 @@ public final class CellTypes {
     private static CellType water = new CellType(
             "water",
             5,
-            0.02,
+            0.1,
             GetBaseDirPath.root() + "/src/media/water-cell.png"
     );
     private static CellType wall = new CellType(
             "wall",
-            1000,
-            0.1,
+            100000,
+            0.25,
             GetBaseDirPath.root() + "/src/media/wall-cell.png"
     ); /* Wall celltype has very high cost to prevent player from selecting it */
     private static CellType goal = new CellType(
             "goal",
-            0,
+            1,
             0,
             GetBaseDirPath.root() + "/src/media/goal-cell.png"
     ); /* SpawnChance equals zero means manual insertion */

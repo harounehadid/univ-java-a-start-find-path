@@ -62,10 +62,10 @@ public class Player {
         }
 
         TwoDimVal nextXYi = new TwoDimVal(-1, -1);
-        int minScore = -1;
+        double minScore = -1;
 
         for (TwoDimVal xyiDes : validDestinations) {
-            int curScore = this.gameManager.calculateScore((int)xyiDes.getX(), (int)xyiDes.getY());
+            double curScore = this.gameManager.calculateScore((int)xyiDes.getX(), (int)xyiDes.getY(), this.indexPos);
 
             if (curScore >= 0) {
                 if (minScore >= 0) {
@@ -103,6 +103,16 @@ public class Player {
     public boolean isStuck(TwoDimVal xyi) {
         if (this.isBackTracking) return false;
         return this.hitCell(xyi);
+    }
+
+    public boolean findOtherPath() {
+        if (PathOptimizer.otherPathsAvailable()) {
+            this.indexPos = PathOptimizer.getLastestScore().getDualIndexPos();
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     // Getters

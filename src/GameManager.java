@@ -47,8 +47,10 @@ public class GameManager {
 
             // Check if player stayed at the same cell
             if (this.player.isStuck(prevIndexPos) || (nextPlayerDestination.getX() < 0 && nextPlayerDestination.getY() < 0)) {
-                setStatusToFail();
-                break;
+                if (!this.player.findOtherPath()) {
+                    setStatusToFail();
+                    break;
+                }
             }
 
             // Check if player hit the goal
@@ -71,17 +73,29 @@ public class GameManager {
         return this.gameField.inBoundary(x, y) && !this.gameField.cellIsVisited(x, y);
     }
 
-    public int calculateScore(int x, int y) {
-        int cost = -1;
+    public double calculateScore(int x, int y, TwoDimVal playerPos) {
+        double score = -1;
 
+        String cellOnType = "";
+
+        // Get the type of the cell that the player is stepping on
         for (Cell curCell : this.gameField.getCellsArr()) {
-            if (curCell.identify(x, y) && curCell.getType() != "wall") {
-                cost = AStarScore.calculateScore(curCell.getDualIndex(), this.goalxyi, curCell.getCost());
+            if (curCell.identify((int)playerPos.getX(), (int)playerPos.getY())) {
+                cellOnType = curCell.getType();
                 break;
             }
         }
 
-        return cost;
+        // Caculating the score while checking if stepping on cell possible
+        for (Cell curCell : this.gameField.getCellsArr()) {
+            if (curCell.identify(x, y) && curCell.getType() != "wall") {
+                if (cellOnType == "water" && curCell.getType() == "water") break;
+                score = PathOptimizer.calculateScore(curCell.getDualIndex(), this.goalxyi, curCell.getCost());
+                break;
+            }
+        }
+
+        return score;
     }
 
     private boolean isGameOver() {

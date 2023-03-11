@@ -1,14 +1,28 @@
-public final class AStarScore {
-    public static int calculateScore(TwoDimVal startPoint, TwoDimVal endPoint, int cost) {
-        int score = 0;
+public class AStarScore {
+    private TwoDimVal dualIndexPos;
+    private double score;
+    private boolean isUsed;
+    
+    public AStarScore(TwoDimVal dualIndexPos, double score) {
+        this.dualIndexPos = dualIndexPos;
+        this.score = score;
+        this.isUsed = false;
+    }
 
-        double deltaX = Math.abs(startPoint.getX() - endPoint.getX());
-        double deltaY = Math.abs(startPoint.getY() - endPoint.getY());
+    public void use() {
+        this.isUsed = true;
+    }
 
-        double heuristic = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+    // Getters
+    public TwoDimVal getDualIndexPos() {
+        return this.dualIndexPos;
+    }
 
-        score = (int)Math.round(cost + heuristic);
-        
-        return score;
+    public double getScore() {
+        return this.score;
+    }
+
+    public boolean getIsUsed() {
+        return this.isUsed;
     }
 }

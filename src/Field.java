@@ -112,15 +112,24 @@ public class Field {
     }
 
     public void spawnPlayer(Player player) {
-        int randomXPos = (int)Math.floor(Math.random() * this.dims.getX());
-        int randomYPos = (int)Math.floor(Math.random() * this.dims.getY());
+        boolean spawningCellFound = false;
+        int randomXPos;
+        int randomYPos;
 
-        for (Cell curCell : this.cellsArr) {
-            if (curCell.identify(randomXPos, randomYPos) && curCell.getType() != "wall" && curCell.getType() != "goal") {
-                curCell.spawnedOn();
-                break;
+        do {
+            randomXPos = (int)Math.floor(Math.random() * this.dims.getX());
+            randomYPos = (int)Math.floor(Math.random() * this.dims.getY());
+
+            for (Cell curCell : this.cellsArr) {
+                if (curCell.identify(randomXPos, randomYPos)) {
+                    if (curCell.getType() == "wall" || curCell.getType() == "goal") continue;
+                    curCell.spawnedOn();
+                    spawningCellFound = true;
+                    break;
+                }
             }
-        }
+
+        } while (!spawningCellFound);
 
         player.onSpawn(randomXPos, randomYPos);
     }
