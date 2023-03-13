@@ -1,6 +1,11 @@
-import javax.swing.JLabel;
+import java.awt.event.ActionListener;
 
-public class GameManager {
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.event.ActionEvent;
+
+public class GameManager implements Runnable {
     private String gameStatus = "idle";
     private Field gameField;
     private CustomFrame gameFrame;
@@ -9,8 +14,13 @@ public class GameManager {
     private String failState = "player failed";
     private String successState = "player succeeded";
     private TwoDimVal goalxyi;
+    private JPanel southPanel;
+    private JButton launchBtn;
 
     public GameManager(TwoDimVal fieldDims) {
+        // Create a new thread to run game manager in parallel
+        Thread gameMangerThread = new Thread(this);
+
         // Set the playing field
         this.gameField = new Field(fieldDims);
 
@@ -18,18 +28,36 @@ public class GameManager {
         this.gameFrame = new CustomFrame("A Start Path Finding");
         this.gameFrame.addItem(this.gameField.getFieldPanel(), "center");
 
+        // Create south panel
+        this.southPanel = new JPanel();
+        this.gameFrame.addItem(this.southPanel, "south");
+
+        // Create the launch button
+        this.launchBtn = this.gameFrame.createButton("Launch");
+        this.launchBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                gameMangerThread.start();
+                launchBtn.setVisible(false);
+            }
+        });
+        
+        // Adding the launch button to the south panel
+        this.southPanel.add(this.launchBtn);
+
+        // Setting game status label and adding it to the south panel
         this.gameStatusLabel = this.gameFrame.createLabel("text", this.gameStatus);
-        this.gameFrame.addItem(this.gameStatusLabel, "south");
+        this.southPanel.add(this.gameStatusLabel);
 
         // This should be called after all GUIs needed are setup
         this.gameFrame.finalizeFrameSetup();
-        
-        // Launch simulation
+    }
+
+    public void run() {
         this.launch();
     }
 
     private void launch() {
-        this.gameStatus = "started";
+        this.gameStatus = "Started";
         this.gameFrame.updateLabel(this.gameStatusLabel, "text", this.gameStatus);
 
         this.player = new Player(this);

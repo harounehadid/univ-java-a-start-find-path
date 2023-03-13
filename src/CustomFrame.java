@@ -87,6 +87,27 @@ public class CustomFrame extends JFrame {
         }
     }
 
+    public void addItem(JButton btn, String section) {
+        if (section == "center") {
+            this.add(btn, BorderLayout.CENTER);
+        }
+        else if (section == "north") {
+            this.add(btn, BorderLayout.NORTH);
+        }
+        else if (section == "east") {
+            this.add(btn, BorderLayout.EAST);
+        }
+        else if (section == "south") {
+            this.add(btn, BorderLayout.SOUTH);
+        }
+        else if (section == "west") {
+            this.add(btn, BorderLayout.WEST);
+        }
+        else {
+            System.out.println("(!) Unknown frame section check item added to CustomFrame (!)");
+        }
+    }
+
     public JLabel createLabel(String itemType, String data) {
         JLabel newLabel = new JLabel();
 
@@ -120,6 +141,13 @@ public class CustomFrame extends JFrame {
         else if (itemType == "text") {
             label.setText(data);
         }
+    }
+
+    public JButton createButton(String btnMessage) {
+        JButton newBtn = new JButton(btnMessage);
+        newBtn.setFont(this.customFont);
+        // newBtn.setSize(100, 40);
+        return newBtn;
     }
 
     public void finalizeFrameSetup() {
