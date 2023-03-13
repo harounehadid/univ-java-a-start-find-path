@@ -1,31 +1,32 @@
 import javax.swing.*;
+import java.awt.*;
+import java.io.Console;
 
 import Utils.GetBaseDirPath;
-
-import java.awt.*;
 
 public class Cell {
     private TwoDimVal dualIndex;
     private String type;
     private int cost;
-    private double spawnChance;
     private String backgroundLoc;
     private int borderLineThickness;
     private JLabel cellGUI;
     private static int cellImageSize = 64;
     private boolean spawnedOn = false;
     private boolean isVisited = false;
+    private int defaultBorderColor = 0x414141;
+    private int spawnedOnBorderColor = 0x982da6;
+    private int onEnterBorderColor = 0x3eb700;
+    private int onExitBorderColor = 0xf28729;
 
     public Cell(TwoDimVal dualIndex, String type) {
         this.dualIndex = new TwoDimVal(dualIndex.getX(), dualIndex.getY());
-//        this.pos = new TwoDimVal(pos.getX(), pos.getY());
 
         // Call cell type to get specifications
         CellType cellData = CellTypes.getTypeData(type);
 
         this.type = cellData.getName();
         this.cost = cellData.getCost();
-        this.spawnChance = cellData.getSpawnChance();
         this.backgroundLoc = cellData.getRepresentation();
 
         this.handleGUI();
@@ -39,14 +40,14 @@ public class Cell {
 
         this.borderLineThickness = 4;
 
-        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0x414141), this.borderLineThickness));
+        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(defaultBorderColor), this.borderLineThickness));
 
         this.treatLabel("image", this.backgroundLoc);
-        this.treatLabel("text", this.type);
     }
 
     private void treatLabel(String itemType, String data) {
         if (itemType == "image") {
+            this.cellGUI.setIcon(null);
             ImageIcon image = new ImageIcon(data);
             this.cellGUI.setSize(Cell.cellImageSize, Cell.cellImageSize);
             this.cellGUI.setIcon(image);
@@ -57,26 +58,25 @@ public class Cell {
     }
 
     public void spawnedOn() {
-        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0x982da6), this.borderLineThickness));
+        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(spawnedOnBorderColor), this.borderLineThickness));
         this.isVisited = true;
         this.spawnedOn = true;
     }
 
     public void onCellEnter() {
-        // // Green color
-        // if (this.spawnedOn) return;
-        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0xf28729), this.borderLineThickness));
         this.isVisited = true;
+
+        this.treatLabel("image", GetBaseDirPath.root() + "/src/media/" + this.type + "-cell-visited.png");
+
+        if (this.spawnedOn) return;
+        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(onEnterBorderColor), this.borderLineThickness));
     }
 
     public void onCellExit() {
-        // String data = GetBaseDirPath.root() + "/src/media/abandoned-cell.png";
-        // ImageIcon image = new ImageIcon(data);
-        //     this.cellGUI.setSize(Cell.cellImageSize, Cell.cellImageSize);
-        //     this.cellGUI.setIcon(image);
+        this.treatLabel("image", this.backgroundLoc);
         
-        // if (this.spawnedOn) return;
-        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(0x3eb700), this.borderLineThickness));
+        if (this.spawnedOn) return;
+        this.cellGUI.setBorder(BorderFactory.createLineBorder(new Color(onExitBorderColor), this.borderLineThickness));
     }
 
     public boolean identify(int x, int y) {

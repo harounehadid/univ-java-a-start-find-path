@@ -137,11 +137,11 @@ public class Field {
     public void detectPlayerMovement(TwoDimVal curPos, TwoDimVal destinedPos) {
         for (Cell curCell : this.cellsArr) {
             if (curCell.identify((int)curPos.getX(), (int)curPos.getY())) {
-                curCell.onCellExit();
+                curCell.onCellEnter();
             }
 
             if (curCell.identify((int)destinedPos.getX(), (int)destinedPos.getY())) {
-                curCell.onCellEnter();
+                curCell.onCellExit();
             }
         }
     }

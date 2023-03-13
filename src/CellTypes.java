@@ -1,3 +1,8 @@
+/* 
+    Thanks to Poloviiinkin for the greate textures
+ *  Link: https://poloviiinkin.itch.io/textures
+ */
+
 import Utils.GetBaseDirPath;
 
 public final class CellTypes {
@@ -28,7 +33,7 @@ public final class CellTypes {
     private static CellType wall = new CellType(
             "wall",
             100000,
-            0.25,
+            0.23,
             GetBaseDirPath.root() + "/src/media/wall-cell.png"
     ); /* Wall celltype has very high cost to prevent player from selecting it */
     private static CellType goal = new CellType(
