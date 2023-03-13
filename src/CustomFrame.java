@@ -2,36 +2,48 @@ import Utils.GetBaseDirPath;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class CustomFrame extends JFrame {
+    private Font customFont;
+
     public CustomFrame(String frameTitle) {
+        this.setCommonSettings(frameTitle);
+    }
+
+    public CustomFrame(String frameTitle, int width, int height) {
+        this.setSize(width, height);
+        this.setCommonSettings(frameTitle);
+    }
+
+    private void setCommonSettings(String frameTitle) {
         this.setTitle(frameTitle);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
 
         ImageIcon image = new ImageIcon(GetBaseDirPath.root() +
-                "/src/media/find-path-algorithm-logo-GeeksforGeeks-image.png");
+        "/src/media/find-path-algorithm-logo-GeeksforGeeks-image.png");
 
         this.setIconImage(image.getImage());
 
         this.getContentPane().setBackground(new Color(0xf8f9f9));
+
+        // Setting the font to be used
+        try {
+            String fontPath = GetBaseDirPath.root() + "/src/media/PressStart2P-Regular.ttf";
+            this.customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
+            this.customFont = this.customFont.deriveFont(Font.PLAIN, 12);
+            System.out.println("Font set");
+        } catch (IOException|FontFormatException e) {
+            System.out.println("(!) Font NOT detected (!)");
+            this.customFont = this.getFont();
+        }
     }
 
-    public CustomFrame(String frameTitle, int width, int height) {
-        this.setTitle(frameTitle);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setResizable(true);
-        this.setLocationRelativeTo(null);
-
-        this.setSize(width, height);
-
-        ImageIcon image = new ImageIcon(GetBaseDirPath.root() +
-                "/src/media/find-path-algorithm-logo-GeeksforGeeks-image.png");
-
-        this.setIconImage(image.getImage());
-
-        this.getContentPane().setBackground(new Color(0xf8f9f9));
+    public Font geFont() {
+        return this.customFont;
     }
 
     public void addItem(JPanel panel, String section) {
@@ -89,6 +101,7 @@ public class CustomFrame extends JFrame {
         }
         else if (itemType == "text") {
             newLabel.setText(data);
+            newLabel.setFont(this.customFont);
         }
 
         return newLabel;
