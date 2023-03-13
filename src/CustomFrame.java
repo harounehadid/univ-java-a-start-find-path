@@ -35,7 +35,6 @@ public class CustomFrame extends JFrame {
             String fontPath = GetBaseDirPath.root() + "/src/media/PressStart2P-Regular.ttf";
             this.customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
             this.customFont = this.customFont.deriveFont(Font.PLAIN, 12);
-            System.out.println("Font set");
         } catch (IOException|FontFormatException e) {
             System.out.println("(!) Font NOT detected (!)");
             this.customFont = this.getFont();
