@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class CustomFrame extends JFrame {
-    private Font customFont;
+    private static Font customFont;
 
     public CustomFrame(String frameTitle) {
         this.setCommonSettings(frameTitle);
@@ -33,16 +33,16 @@ public class CustomFrame extends JFrame {
         // Setting the font to be used
         try {
             String fontPath = GetBaseDirPath.root() + "/src/media/PressStart2P-Regular.ttf";
-            this.customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
-            this.customFont = this.customFont.deriveFont(Font.PLAIN, 12);
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
+            customFont = customFont.deriveFont(Font.PLAIN, 12);
         } catch (IOException|FontFormatException e) {
             System.out.println("(!) Font NOT detected (!)");
-            this.customFont = this.getFont();
+            customFont = this.getFont();
         }
     }
 
-    public Font geFont() {
-        return this.customFont;
+    public static Font geFont() {
+        return customFont;
     }
 
     public void addItem(JPanel panel, String section) {
@@ -121,7 +121,7 @@ public class CustomFrame extends JFrame {
         }
         else if (itemType == "text") {
             newLabel.setText(data);
-            newLabel.setFont(this.customFont);
+            newLabel.setFont(customFont);
         }
 
         return newLabel;
@@ -145,7 +145,7 @@ public class CustomFrame extends JFrame {
 
     public JButton createButton(String btnMessage) {
         JButton newBtn = new JButton(btnMessage);
-        newBtn.setFont(this.customFont);
+        newBtn.setFont(customFont);
         // newBtn.setSize(100, 40);
         return newBtn;
     }

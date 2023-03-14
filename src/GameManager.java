@@ -14,8 +14,7 @@ public class GameManager implements Runnable {
     private String failState = "player failed";
     private String successState = "player succeeded";
     private TwoDimVal goalxyi;
-    private JPanel southPanel;
-    private JButton launchBtn;
+    private Battery playerBattery;
 
     public GameManager(TwoDimVal fieldDims) {
         // Create a new thread to run game manager in parallel
@@ -24,17 +23,25 @@ public class GameManager implements Runnable {
         // Set the playing field
         this.gameField = new Field(fieldDims);
 
-        // Handle GUI
+        // Handle GUI >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         this.gameFrame = new CustomFrame("A Start Path Finding");
         this.gameFrame.addItem(this.gameField.getFieldPanel(), "center");
 
+        // Create north panel
+        JPanel northPanel = new JPanel();
+        this.gameFrame.addItem(northPanel, "north");
+
+        // Create the battery for the player
+        this.playerBattery = new Battery();
+        northPanel.add(this.playerBattery.getGUI());
+
         // Create south panel
-        this.southPanel = new JPanel();
-        this.gameFrame.addItem(this.southPanel, "south");
+        JPanel southPanel = new JPanel();
+        this.gameFrame.addItem(southPanel, "south");
 
         // Create the launch button
-        this.launchBtn = this.gameFrame.createButton("Launch");
-        this.launchBtn.addActionListener(new ActionListener() {
+        JButton launchBtn = this.gameFrame.createButton("Launch");
+        launchBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 gameMangerThread.start();
                 launchBtn.setVisible(false);
@@ -42,14 +49,15 @@ public class GameManager implements Runnable {
         });
         
         // Adding the launch button to the south panel
-        this.southPanel.add(this.launchBtn);
+        southPanel.add(launchBtn);
 
         // Setting game status label and adding it to the south panel
         this.gameStatusLabel = this.gameFrame.createLabel("text", this.gameStatus);
-        this.southPanel.add(this.gameStatusLabel);
+        southPanel.add(this.gameStatusLabel);
 
         // This should be called after all GUIs needed are setup
         this.gameFrame.finalizeFrameSetup();
+        // -----------------------------------------------------------------------------
     }
 
     public void run() {
@@ -106,6 +114,8 @@ public class GameManager implements Runnable {
 
         String cellOnType = "";
 
+        int cost = 0;
+
         // Get the type of the cell that the player is stepping on
         for (Cell curCell : this.gameField.getCellsArr()) {
             if (curCell.identify((int)playerPos.getX(), (int)playerPos.getY())) {
@@ -118,10 +128,13 @@ public class GameManager implements Runnable {
         for (Cell curCell : this.gameField.getCellsArr()) {
             if (curCell.identify(x, y) && curCell.getType() != "wall") {
                 if (cellOnType == "water" && curCell.getType() == "water") break;
-                score = PathOptimizer.calculateScore(curCell.getDualIndex(), this.goalxyi, curCell.getCost());
+                cost = curCell.getCost();
+                score = PathOptimizer.calculateScore(curCell.getDualIndex(), this.goalxyi, cost);
                 break;
             }
         }
+
+        if (score > 0) this.playerBattery.use(cost * 2);
 
         return score;
     }
